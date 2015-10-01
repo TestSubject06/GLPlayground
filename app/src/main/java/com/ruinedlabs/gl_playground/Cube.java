@@ -39,10 +39,11 @@ public class Cube {
     private final String vertexShaderCode =
             "uniform mat4 uMVPMatrix;" +
                     "attribute vec4 vPosition;" +
+                    "uniform float time;" +
                     "varying vec4 color;" +
                     "void main() {" +
                     "   color = vPosition + vec4(0.5, 0.5, 0.5, 0.5);" +
-                    "  gl_Position = uMVPMatrix * vPosition;" +
+                    "  gl_Position = uMVPMatrix * vPosition + vec4(sin(time), cos(time),1,1);" +
                     "}";
 
     private final String fragmentShaderCode =
@@ -104,13 +105,23 @@ public class Cube {
 
     private final int vertexCount = drawOrder.length;
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+   
+    private float totalTime = 0.0f;
 
+    public void update(float elapsed){
+        totalTime += elapsed;
+    }
+    
     public void draw(float[] mvpMatrix) {
         // Add program to OpenGL ES environment
         GLES20.glUseProgram(mProgram);
 
         // get handle to vertex shader's vPosition member
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
+        
+        mTimeHandle = GLES20.glGetUniformLocation(mProgram, "time");
+        
+        GLES20.glUniform1f(mTimeHandle, totalTime);
 
         // Enable a handle to the triangle vertices
         GLES20.glEnableVertexAttribArray(mPositionHandle);

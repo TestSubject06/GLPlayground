@@ -15,6 +15,7 @@ public  class CoolRenderer implements GLSurfaceView.Renderer {
 
     private Triangle triangle;
     private Cube cube;
+    private long lastSystemTime;
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -45,6 +46,7 @@ public  class CoolRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_CULL_FACE);
         GLES20.glCullFace(GLES20.GL_BACK);
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+        lastSystemTime = SystemClock.uptimeMillis();
     }
 
     @Override
@@ -74,6 +76,12 @@ public  class CoolRenderer implements GLSurfaceView.Renderer {
         //triangle.draw(scratch);
 
         //Matrix.translateM(scratch, 0, scratch, 0, -2.0f, 0, 0);
+        
+        long currentTime = SystemClock.uptimeMillis();
+        long elapsedTime = currentTime - lastSystrmTime;
+        lastSystemTime = currentTime;
+        
+        cube.update((float)(elapsedTime/1000));
         cube.draw(scratch);
     }
 
