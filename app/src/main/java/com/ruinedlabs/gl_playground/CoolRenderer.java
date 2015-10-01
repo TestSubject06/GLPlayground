@@ -81,7 +81,7 @@ public  class CoolRenderer implements GLSurfaceView.Renderer {
         long elapsedTime = currentTime - lastSystemTime;
         lastSystemTime = currentTime;
         
-        cube.update((float)(elapsedTime/1000));
+        cube.update((float)(elapsedTime/1000.0));
         cube.draw(scratch);
     }
 

@@ -42,8 +42,8 @@ public class Cube {
                     "uniform float time;" +
                     "varying vec4 color;" +
                     "void main() {" +
-                    "   color = vPosition + vec4(0.5, 0.5, 0.5, 0.5);" +
-                    "  gl_Position = uMVPMatrix * vPosition + vec4(sin(time), cos(time),1,1);" +
+                    "   color = vPosition + vec4(0.5+time, 0.5, 0.5, 0.5);" +
+                    "  gl_Position = uMVPMatrix * vPosition + vec4(sin(time)*5, cos(time)*5,1,1);" +
                     "}";
 
     private final String fragmentShaderCode =
