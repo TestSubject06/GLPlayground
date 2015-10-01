@@ -102,6 +102,7 @@ public class Cube {
     private int mPositionHandle;
     private int mMVPMatrixHandle;
     private int mColorHandle;
+    private int mTimeHandle;
 
     private final int vertexCount = drawOrder.length;
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex

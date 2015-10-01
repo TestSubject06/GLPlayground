@@ -78,7 +78,7 @@ public  class CoolRenderer implements GLSurfaceView.Renderer {
         //Matrix.translateM(scratch, 0, scratch, 0, -2.0f, 0, 0);
         
         long currentTime = SystemClock.uptimeMillis();
-        long elapsedTime = currentTime - lastSystrmTime;
+        long elapsedTime = currentTime - lastSystemTime;
         lastSystemTime = currentTime;
         
         cube.update((float)(elapsedTime/1000));
