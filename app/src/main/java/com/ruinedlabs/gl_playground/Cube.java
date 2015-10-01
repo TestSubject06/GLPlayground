@@ -94,6 +94,7 @@ public class Cube {
         // add the fragment shader to program
         GLES20.glAttachShader(mProgram, fragmentShader);
 
+    
         // creates OpenGL ES program executables
         GLES20.glLinkProgram(mProgram);
 
