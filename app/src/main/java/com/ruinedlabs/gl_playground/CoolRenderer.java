@@ -16,13 +16,6 @@ public  class CoolRenderer implements GLSurfaceView.Renderer {
     private Triangle triangle;
     private Cube cube;
     private long lastSystemTime;
-    @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-        triangle = new Triangle();
-        cube = new Cube();
-    }
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -31,7 +24,17 @@ public  class CoolRenderer implements GLSurfaceView.Renderer {
     private float[] mRotationMatrix = new float[16];
     private float[] mRotationMatrix2 = new float[16];
 
+    public volatile float mAngleX;
+    public volatile float mAngleY;
 
+
+    @Override
+    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+        triangle = new Triangle();
+        cube = new Cube();
+    }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
@@ -92,8 +95,6 @@ public  class CoolRenderer implements GLSurfaceView.Renderer {
         return shader;
     }
 
-    public volatile float mAngleX;
-
     public float getAngleX() {
         return mAngleX;
     }
@@ -101,8 +102,6 @@ public  class CoolRenderer implements GLSurfaceView.Renderer {
     public void setAngleX(float angle) {
         mAngleX = angle;
     }
-
-    public volatile float mAngleY;
 
     public float getAngleY() {
         return mAngleY;

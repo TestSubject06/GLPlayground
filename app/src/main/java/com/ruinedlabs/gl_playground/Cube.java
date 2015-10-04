@@ -11,11 +11,6 @@ import java.nio.ShortBuffer;
  * Created by zack on 9/26/15.
  */
 public class Cube {
-    private FloatBuffer vertexBuffer;
-    private ShortBuffer drawListBuffer;
-
-    // number of coordinates per vertex in this array
-    // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float cubeCoords[] = {
             -0.5f,  0.5f, 0.5f,   // top left front
@@ -25,40 +20,51 @@ public class Cube {
             -0.5f,  0.5f, -0.5f,   // top left back
             -0.5f, -0.5f, -0.5f,   // bottom left back
             0.5f, -0.5f, -0.5f,   // bottom right back
-            0.5f,  0.5f, -0.5f }; // top right back
+            0.5f,  0.5f, -0.5f // top right back
+    };
 
     static final short drawOrder[] = {0, 1, 2, 0, 2, 3, //Front face
-                                      4, 0, 7, 7, 0, 3, //top face
-                                      2, 1, 5, 5, 6, 2,
-                                       7, 3, 6, 6, 3, 2,
-                                       0, 4, 5, 5, 1, 0,
-                                       4, 7, 5, 5, 7, 6 //bottom face
-                                    };
+            4, 0, 7, 7, 0, 3, //top face
+            2, 1, 5, 5, 6, 2,
+            7, 3, 6, 6, 3, 2,
+            0, 4, 5, 5, 1, 0,
+            4, 7, 5, 5, 7, 6 //bottom face
+    };
+    private FloatBuffer vertexBuffer;
+    private ShortBuffer drawListBuffer;
+    private int mPositionHandle;
+    private int mMVPMatrixHandle;
+    private int mColorHandle;
+    private int mTimeHandle;
+
+    private final int vertexCount = drawOrder.length;
+    private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+
+    private float totalTime = 0.0f;
 
 
     private final String vertexShaderCode =
             "uniform mat4 uMVPMatrix;" +
-                    "attribute vec4 vPosition;" +
-                    "uniform float time;" +
-                    "varying vec4 color;" +
-                    "void main() {" +
-                    "   color = vPosition + vec4(0.5+time, 0.5, 0.5, 0.5);" +
-                    "  gl_Position = uMVPMatrix * vPosition + vec4(sin(time)*2.0, cos(time)*2.0,0,0);" +
-                    "}";
+            "attribute vec4 vPosition;" +
+            "uniform float time;" +
+            "varying vec4 color;" +
+            "void main() {" +
+            "color = vPosition + vec4(0.5+time, 0.5, 0.5, 0.5);" +
+            "gl_Position = uMVPMatrix * vPosition + vec4(sin(time)*2.0, cos(time)*2.0,0,0);" +
+            "}";
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
-                    "uniform vec4 vColor;" +
-                    "varying vec4 color;" +
-                    "void main() {" +
-                    "  gl_FragColor = color;" +
-                    "}";
+            "uniform vec4 vColor;" +
+            "varying vec4 color;" +
+            "void main() {" +
+            "  gl_FragColor = color;" +
+            "}";
 
     // Set color with red, green, blue and alpha (opacity) values
     float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 1.0f };
 
     private final int mProgram;
-
 
     public Cube() {
         // initialize vertex byte buffer for shape coordinates
@@ -99,16 +105,6 @@ public class Cube {
         GLES20.glLinkProgram(mProgram);
 
     }
-
-    private int mPositionHandle;
-    private int mMVPMatrixHandle;
-    private int mColorHandle;
-    private int mTimeHandle;
-
-    private final int vertexCount = drawOrder.length;
-    private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
-   
-    private float totalTime = 0.0f;
 
     public void update(float elapsed){
         totalTime += elapsed;

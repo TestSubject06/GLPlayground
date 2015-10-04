@@ -10,8 +10,6 @@ import java.nio.FloatBuffer;
  * Created by zack on 9/26/15.
  */
 public class Triangle {
-    private FloatBuffer vertexBuffer;
-
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float triangleCoords[] = {   // in counterclockwise order:
@@ -20,25 +18,30 @@ public class Triangle {
             0.5f, -0.311004243f, 0.0f  // bottom right
     };
 
+    private FloatBuffer vertexBuffer;
+    private int mPositionHandle;
+    private int mMVPMatrixHandle;
+    private int mColorHandle;
+    private final int vertexCount = triangleCoords.length / COORDS_PER_VERTEX;
+    private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
     private final String vertexShaderCode =
             "uniform mat4 uMVPMatrix;" +
-                    "attribute vec4 vPosition;" +
-                    "void main() {" +
-                    "  gl_Position = uMVPMatrix * vPosition;" +
-                    "}";
+            "attribute vec4 vPosition;" +
+            "void main() {" +
+            "  gl_Position = uMVPMatrix * vPosition;" +
+            "}";
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
-                    "uniform vec4 vColor;" +
-                    "void main() {" +
-                    "  gl_FragColor = vColor;" +
-                    "}";
+            "uniform vec4 vColor;" +
+            "void main() {" +
+            "  gl_FragColor = vColor;" +
+            "}";
 
     // Set color with red, green, blue and alpha (opacity) values
     float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 1.0f };
 
     private final int mProgram;
-
 
     public Triangle() {
         // initialize vertex byte buffer for shape coordinates
@@ -73,13 +76,6 @@ public class Triangle {
         GLES20.glLinkProgram(mProgram);
 
     }
-
-    private int mPositionHandle;
-    private int mMVPMatrixHandle;
-    private int mColorHandle;
-
-    private final int vertexCount = triangleCoords.length / COORDS_PER_VERTEX;
-    private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
     public void draw(float[] mvpMatrix) {
         // Add program to OpenGL ES environment
